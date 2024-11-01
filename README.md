@@ -2,8 +2,7 @@
 ## Directories
 ### `fs`:
 File system.
-- `inode.h`:        Inode structure.
-- `ext2.h`:         Ext2 file system driver.
+- `vfs.h`:          File system interface.
 ### `io`:
 Input/Output drivers.
 - `port.h`:         Port I/O.
@@ -28,14 +27,26 @@ Architecture-specific code.
 - `timer.h`:        Set up timer.
 - `paging.h`:       Set up paging.
 - `memmap.h`:       Get a memory map of RAM.
+## Memory
+### Page frame allocator
+1. Initialize bitmap: allocate some pages for it.
+2. Get memory map of RAM.
+3. Save to bitmap.
+4. `1` is used, `0` is free.
+I can't put that much data without allocating specific pages.
+### Virtual memory manager
+1. Allocate pages for storing page directories and tables.
+2. Put the kernel pages into said pages.
+3. Allocate a page for editing each page related structure.
+4. Let user setup and use address spaces, map onto them, and delete them after.
 ## Logging
 ### Log levels
-- Success:      `[SUCCESS     ]: Message.`.
-- Initializing: `[INITIALIZING]: Message.`.
-- Info:         `[INFO        ]: Message.`.
-- Warning:      `[WARNING     ]: Message.`.
-- Error:        `[ERROR       ]: Message. Action taken.`.
-- Kernel panic: `[KERNEL PANIC]: Message.\r\n<CPU DUMP>`.
+- Success:          `[SUCCESS     ]: Message.`.
+- Initializing:     `[INITIALIZING]: Message.`.
+- Info:             `[INFO        ]: Message.`.
+- Warning:          `[WARNING     ]: Message.`.
+- Error:            `[ERROR       ]: Message. Action taken.`.
+- Kernel panic:     `[KERNEL PANIC]: Message.\r\n<CPU DUMP>`.
 ### CPU dump format
 ```
 CPU DUMP:
